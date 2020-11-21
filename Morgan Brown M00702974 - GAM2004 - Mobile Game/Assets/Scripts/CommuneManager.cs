@@ -6,16 +6,16 @@ using TMPro;
 // A class for managing commune functions and variables needed by all controllers
 public class CommuneManager : MonoBehaviour
 {
-    // Needs enum for finding needs quickly
-    public enum needs
-    {
-        food = 0,
-        water = 1
-    }
-
+    // RefEnum to reference
+    private RefEnums myRefs;
+    
     // Needs variables
-    [Header("Consumable Needs")]
     public int[] consumableNeeds = new int[2];
+
+    // Resources variables
+    public int[] resourcesCount = new int[2];
+
+    // "Readouts" (basically counts of how many of a thing there is)
     [Header("Readouts")]
     private int beds = 0;
     public int time = 0;
@@ -24,6 +24,10 @@ public class CommuneManager : MonoBehaviour
     // UI variables
     [Header("Consumable Needs UI")]
     [SerializeField] private TMP_Text[] consumableNeedsTxt = new TMP_Text[2];
+
+    [Header("Resources UI")]
+    [SerializeField] private TMP_Text[] resourcesCountTxt = new TMP_Text[2];
+
     [Header("Readouts")]
     [SerializeField] private TMP_Text bedTxt;
     [SerializeField] private TMP_Text timeTxt;
@@ -52,6 +56,9 @@ public class CommuneManager : MonoBehaviour
         {
             _instance = this;
         }
+
+        // Get my RefEnum
+        myRefs = GetComponent<RefEnums>();
     }
 
     private void Update()
@@ -60,6 +67,12 @@ public class CommuneManager : MonoBehaviour
         for (int i = 0; i < consumableNeeds.Length; i++)
         {
             consumableNeedsTxt[i].text = consumableNeeds[i].ToString();
+        }
+
+        // Set resourcesCountTxt to resourcesCount
+        for (int i = 0; i < resourcesCount.Length; i++)
+        {
+            resourcesCountTxt[i].text = resourcesCount[i].ToString();
         }
     }
 }
