@@ -17,13 +17,25 @@ public class CameraController : MonoBehaviour
             case RuntimePlatform.Android:
                 break;
             default:
+                // Get mouse position as Vector2
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
+
+                // Cast mouse to ray
+                RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
+                if(Input.GetMouseButtonDown(0) && hit) 
+                {
+                    hit.transform.gameObject.SendMessage("Clicked");
+                }
+
                 // Move while the mouse button is down
                 if (Input.GetMouseButton(1))
                 {
-                    move = (lastMousePos - new Vector2(Input.mousePosition.x, Input.mousePosition.y)) * mouseMoveSpd;
+                    move = (lastMousePos - mousePos2D) * mouseMoveSpd;
                 }
+
                 // Make last mouse pos current mouse pos
-                lastMousePos = Input.mousePosition;
+                lastMousePos = mousePos2D;
                 break;
         }
 

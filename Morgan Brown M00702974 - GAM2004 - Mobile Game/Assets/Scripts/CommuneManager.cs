@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using BuildingTheCommune;
 
 // A class for managing commune functions and variables needed by all controllers
 public class CommuneManager : MonoBehaviour
 {
-    // RefEnum to reference
-    private RefEnums myRefs;
-    
     // Needs variables
     public int[] consumableNeeds = new int[2];
 
@@ -32,6 +30,9 @@ public class CommuneManager : MonoBehaviour
     [SerializeField] private TMP_Text bedTxt;
     [SerializeField] private TMP_Text timeTxt;
     [SerializeField] private TMP_Text peopleTxt;
+
+    // Task queue, keeps a list of tasks
+    public List<Task> taskQueue = new List<Task>();
     
     // Make the CommuneManager a Singleton
     // Find any other instances of CommuneManager
@@ -56,9 +57,6 @@ public class CommuneManager : MonoBehaviour
         {
             _instance = this;
         }
-
-        // Get my RefEnum
-        myRefs = GetComponent<RefEnums>();
     }
 
     private void Update()
@@ -73,6 +71,24 @@ public class CommuneManager : MonoBehaviour
         for (int i = 0; i < resourcesCount.Length; i++)
         {
             resourcesCountTxt[i].text = resourcesCount[i].ToString();
+        }
+    }
+
+    public void AddTask(Task task)
+    {
+        // Add a task to the task queue with parameters given
+        taskQueue.Add(task);
+    }
+
+    public bool RemoveTask(Task task)
+    {
+        // Check for task in taskqueue, if found delete it and return true, else return false
+        if (taskQueue.Remove(task))
+        {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
