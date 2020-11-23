@@ -33,6 +33,9 @@ public class CommuneManager : MonoBehaviour
 
     // Task queue, keeps a list of tasks
     public List<Task> taskQueue = new List<Task>();
+
+    // List of Commune Members
+    public GameObject[] communeMembers;
     
     // Make the CommuneManager a Singleton
     // Find any other instances of CommuneManager
@@ -57,6 +60,12 @@ public class CommuneManager : MonoBehaviour
         {
             _instance = this;
         }
+    }
+
+    private void Start()
+    {
+        // Get a list of commune members at start of game
+        communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
     }
 
     private void Update()
@@ -85,6 +94,14 @@ public class CommuneManager : MonoBehaviour
         // Check for task in taskqueue, if found delete it and return true, else return false
         if (taskQueue.Remove(task))
         {
+            // Remove the task for the communeMember so they're not trying to do a deleted task
+            foreach (GameObject communeMember in communeMembers)
+            {
+                if (communeMember.GetComponent<CommuneMember>().targetTask == task)
+                {
+                    communeMember.GetComponent<CommuneMember>().targetTask = null;
+                }
+            }
             return true;
         }
         else {

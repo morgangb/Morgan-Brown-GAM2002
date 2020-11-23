@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using BuildingTheCommune;
 
+[RequireComponent(typeof(Clickable))]
 public class ExtractableResource : MonoBehaviour
 {
     // Determine what resource to give and how much
@@ -14,11 +15,12 @@ public class ExtractableResource : MonoBehaviour
     [SerializeField] private int consumableType;
     [SerializeField] private int consumableQuant;
 
+    // Determine how extraction works
+    [SerializeField] private int skill;
+    [SerializeField] private float difficulty = 1f;
+
     // Store ref to the communemanager
     private CommuneManager myCommuneManager;
-
-    // Create a task for harvesting
-    private Task myTask;
 
     private void Start()
     {
@@ -26,16 +28,7 @@ public class ExtractableResource : MonoBehaviour
         myCommuneManager = GameObject.FindWithTag("CommuneManager").GetComponent<CommuneManager>();
 
         // Set task for extraction
-        myTask = new Task(0, 0, gameObject);
-    }
-
-    public void Clicked()
-    {
-        // On clicked remove/add task
-        if(!myCommuneManager.RemoveTask(myTask)) 
-        {
-            myCommuneManager.AddTask(myTask);
-        }
+        GetComponent<Clickable>().myTask = new Task(0, skill, difficulty, gameObject);
     }
 
     public void Extract() 
