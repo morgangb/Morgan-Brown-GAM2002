@@ -7,6 +7,15 @@ using BuildingTheCommune;
 // A class for managing commune functions and variables needed by all controllers
 public class CommuneManager : MonoBehaviour
 {
+    // Store arrays of names
+    public string[] firstNames = {
+        
+    };
+
+    public string[] surNames = {
+
+    };
+
     // Needs variables
     public int[] consumableNeeds = new int[2];
 

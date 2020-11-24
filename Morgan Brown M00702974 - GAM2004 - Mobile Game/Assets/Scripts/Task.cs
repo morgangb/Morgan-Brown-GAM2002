@@ -20,7 +20,9 @@ namespace BuildingTheCommune {
     // Task enum for finding tasks quickly
     public enum TASKS
     {
-        EXTRACT
+        EXTRACT,
+        BUILD,
+        USE
     }
 
     // Levels enum for measuring the diff levels
@@ -35,7 +37,9 @@ namespace BuildingTheCommune {
     public enum SKILLS
     {
         WOODCUTTING,
-        MINING
+        MINING,
+        BUILDING,
+        HAULING
     }
 
     public class Task
@@ -67,6 +71,12 @@ namespace BuildingTheCommune {
             {
                 case 0:
                     target.SendMessage("Extract");
+                    break;
+                case 1:
+                    target.SendMessage("Build");
+                    break;
+                case 2:
+                    target.SendMessage("Use");
                     break;
                 default:
                     Debug.Log("taskType not recognised");

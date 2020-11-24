@@ -12,8 +12,8 @@ public class CommuneMember : MonoBehaviour
     private CommuneManager myCommuneManager;
 
     // Member skill stats
-    public int[] abilities = {1};
-    public int[] enjoyment = {1};
+    public int[] abilities = {1, 1, 1, 1};
+    public int[] enjoyment = {1, 1, 1, 1};
     
     // Movement spd
     [SerializeField] private float moveSpd = 1f;
@@ -33,14 +33,13 @@ public class CommuneMember : MonoBehaviour
             if (myCommuneManager.taskQueue.Count > 0) 
             {
                 targetTask = myCommuneManager.taskQueue[0];
+                // Set targetTask's member to this, so that it knows who is doing it
+                targetTask.member = gameObject;
             }
             else
             {
 
             }
-
-            // Set targetTask's member to this, so that it knows who is doing it
-            targetTask.member = gameObject;
         }
         else
         {

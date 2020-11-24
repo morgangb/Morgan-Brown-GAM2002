@@ -23,13 +23,14 @@ public class Clickable : MonoBehaviour
 
     public void Clicked()
     {
-        // On clicked remove/add task
+        // On clicked remove/add task for using
         if(!myCommuneManager.RemoveTask(myTask)) 
         {
             taskMarker.SetActive(true);
             myCommuneManager.AddTask(myTask);
         }
-        else {
+        else 
+        {
             taskMarker.SetActive(false);
         }
     }

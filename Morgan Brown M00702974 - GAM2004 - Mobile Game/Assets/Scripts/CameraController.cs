@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    // Last mouse position
     private Vector2 lastMousePos;
+
+    // Speed at which to move when dragging
     [SerializeField] private float mouseMoveSpd = 0.05f;
+
+    // Foundation to be placed
+    public GameObject foundationPrefab = null;
 
     private void Update()
     {
+        // Reset var by which to move
         var move = Vector2.zero;
 
         // Switch input by platform
@@ -23,9 +30,17 @@ public class CameraController : MonoBehaviour
 
                 // Cast mouse to ray
                 RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
-                if(Input.GetMouseButtonDown(0) && hit) 
+                if(Input.GetMouseButtonDown(0))
                 {
-                    hit.transform.gameObject.SendMessage("Clicked");
+                    if (foundationPrefab == null && hit)
+                    {
+                        // Tell hit it's been clicked
+                        hit.transform.gameObject.SendMessage("Clicked");
+                    }
+                    else if (foundationPrefab != null) 
+                    {
+                        Instantiate(foundationPrefab, new Vector3(hit.point.x, hit.point.y, 0f), Quaternion.identity);
+                    }
                 }
 
                 // Move while the mouse button is down
@@ -41,5 +56,11 @@ public class CameraController : MonoBehaviour
 
         // Apply movement
         transform.Translate(move);
+    }
+
+    public void SetFoundationPrefab (GameObject _foundationPrefab)
+    {
+        // Set the foundation prefab to the foundation prefab given
+        foundationPrefab = _foundationPrefab;
     }
 }
