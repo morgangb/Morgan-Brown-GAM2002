@@ -39,7 +39,8 @@ public class CameraController : MonoBehaviour
                     }
                     else if (foundationPrefab != null) 
                     {
-                        Instantiate(foundationPrefab, new Vector3(hit.point.x, hit.point.y, 0f), Quaternion.identity);
+                        // Instantiate foundationPrefab at position clicked
+                        Instantiate(foundationPrefab, new Vector3(mousePos.x, mousePos.y, 0f), Quaternion.identity);
                     }
                 }
 
@@ -62,5 +63,10 @@ public class CameraController : MonoBehaviour
     {
         // Set the foundation prefab to the foundation prefab given
         foundationPrefab = _foundationPrefab;
+    }
+
+    public void ClearFoundationPrefab ()
+    {
+        foundationPrefab = null;
     }
 }

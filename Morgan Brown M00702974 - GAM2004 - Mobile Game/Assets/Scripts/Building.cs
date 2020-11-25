@@ -54,7 +54,6 @@ public class Building : MonoBehaviour
     {
         // Set that this building has been built
         built = true;
-        Debug.Log("Built");
         // Set clickable's task to using this gameObject at the specified difficulty
         myClickable.myTask = new Task(2, skill, buildDifficulty, gameObject);
     }

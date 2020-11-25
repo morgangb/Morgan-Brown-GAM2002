@@ -100,21 +100,25 @@ public class CommuneManager : MonoBehaviour
 
     public bool RemoveTask(Task task)
     {
+        // Set task not removed as default
+        bool taskRemoved = false;
         // Check for task in taskqueue, if found delete it and return true, else return false
-        if (taskQueue.Remove(task))
+        while (taskQueue.Remove(task))
         {
+            // Toggle off task marker
+            task.target.GetComponentInChildren<Clickable>().taskMarker.SetActive(false);
             // Remove the task for the communeMember so they're not trying to do a deleted task
             foreach (GameObject communeMember in communeMembers)
             {
-                if (communeMember.GetComponent<CommuneMember>().targetTask == task)
+                if (communeMember.GetComponent<CommuneMember>().targetTask.target == task.target)
                 {
                     communeMember.GetComponent<CommuneMember>().targetTask = null;
                 }
             }
-            return true;
+
+            // Mark that task has been removed
+            taskRemoved = true;
         }
-        else {
-            return false;
-        }
+        return taskRemoved;
     }
 }

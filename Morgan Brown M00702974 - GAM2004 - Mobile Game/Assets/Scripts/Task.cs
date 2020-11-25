@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,8 +43,22 @@ namespace BuildingTheCommune {
         HAULING
     }
 
-    public class Task
+    public class Task : IEquatable<Task>
     {
+        public Task()
+        {
+
+        }
+
+        // This is an initializer that will allow a new task to be created as a copy of an existing task
+        public Task(Task _task)
+        {
+            taskType = _task.taskType;
+            skill = _task.skill;
+            target = _task.target;
+            difficulty = _task.difficulty;
+        }
+
         // This is an initializer that will allow a new task to be created with a taskType and a target
         public Task(int _taskType, int _skill, float _difficulty, GameObject _target)
         {
@@ -60,9 +75,9 @@ namespace BuildingTheCommune {
         // Difficulty & time to completion, will count down
         public float difficulty;
         // Target of task
-        public GameObject target;
+        public GameObject target { get; set; }
         // Commune member currently doing task
-        public GameObject member = null;
+        public GameObject member { get; set; } = null;
 
         public void Complete()
         {
@@ -82,6 +97,20 @@ namespace BuildingTheCommune {
                     Debug.Log("taskType not recognised");
                     break;
             }
+        }
+
+        // Bools for checking removed from queue
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            Task objAsTask = obj as Task;
+            if (objAsTask == null) return false;
+            else return Equals(objAsTask);
+        }
+        public bool Equals(Task other)
+        {
+            if (other == null) return false;
+            return (this.target.Equals(other.target));
         }
     }
 }

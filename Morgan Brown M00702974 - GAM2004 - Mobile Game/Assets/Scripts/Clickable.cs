@@ -12,7 +12,7 @@ public class Clickable : MonoBehaviour
     private CommuneManager myCommuneManager;
 
     // Store ref to taskMarker
-    [SerializeField] private GameObject taskMarker;
+    public GameObject taskMarker;
 
     private void Start()
     {
@@ -24,10 +24,10 @@ public class Clickable : MonoBehaviour
     public void Clicked()
     {
         // On clicked remove/add task for using
-        if(!myCommuneManager.RemoveTask(myTask)) 
+        if(!myCommuneManager.RemoveTask(new Task(myTask)))
         {
             taskMarker.SetActive(true);
-            myCommuneManager.AddTask(myTask);
+            myCommuneManager.AddTask(new Task(myTask));
         }
         else 
         {

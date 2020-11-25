@@ -55,6 +55,7 @@ public class CommuneMember : MonoBehaviour
                 {
                     targetTask.Complete();
                     myCommuneManager.RemoveTask(targetTask);
+                    targetTask = null;
                 }
             }
         }
