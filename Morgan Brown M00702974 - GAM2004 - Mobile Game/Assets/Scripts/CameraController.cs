@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class CameraController : MonoBehaviour
 
     // Foundation to be placed
     public GameObject foundationPrefab = null;
+
+    // Image for foundation currently held
+    [SerializeField] private Image foundationImage;
 
     private void Update()
     {
@@ -41,6 +45,8 @@ public class CameraController : MonoBehaviour
                     {
                         // Instantiate foundationPrefab at position clicked
                         Instantiate(foundationPrefab, new Vector3(mousePos.x, mousePos.y, 0f), Quaternion.identity);
+                        // Clear foundation prefab
+                        ClearFoundationPrefab();
                     }
                 }
 
@@ -53,6 +59,15 @@ public class CameraController : MonoBehaviour
                 // Make last mouse pos current mouse pos
                 lastMousePos = mousePos2D;
                 break;
+        }
+        
+        if (foundationPrefab != null) {
+            foundationImage.enabled = true;
+            foundationImage.sprite = foundationPrefab.GetComponent<SpriteRenderer>().sprite;
+        }
+        else
+        {
+            foundationImage.enabled = false;
         }
 
         // Apply movement
@@ -67,6 +82,7 @@ public class CameraController : MonoBehaviour
 
     public void ClearFoundationPrefab ()
     {
+        // Clear foundation prefab by setting it to null
         foundationPrefab = null;
     }
 }
