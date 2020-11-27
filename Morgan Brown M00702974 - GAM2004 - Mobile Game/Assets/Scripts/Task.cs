@@ -113,4 +113,14 @@ namespace BuildingTheCommune {
             return (this.target.Equals(other.target));
         }
     }
+
+    public class Bed 
+    {
+        public CommuneMember owner;
+
+        public Bed()
+        {
+            
+        }
+    }
 }

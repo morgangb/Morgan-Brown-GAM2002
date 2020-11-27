@@ -90,6 +90,20 @@ public class CommuneManager : MonoBehaviour
         {
             resourcesCountTxt[i].text = resourcesCount[i].ToString();
         }
+
+        // Set beds to the number of beds in the scene
+        beds = 0;
+        var buildings = FindObjectsOfType<Building>();
+        foreach (Building building in buildings)
+        {
+            if (building.built)
+            {
+                beds += building.bedsCount;
+            }
+        }
+        
+        // Set beds text to beds
+        bedTxt.text = beds.ToString();
     }
 
     public void AddTask(Task task)

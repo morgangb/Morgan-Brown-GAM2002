@@ -15,7 +15,7 @@ public class Building : MonoBehaviour
     [SerializeField] private int skill = 0;
 
     // boolean that measures if this is built
-    private bool built = false;
+    public bool built = false;
 
     // Marker that building is under construction
     [SerializeField] private GameObject buildMarker;
@@ -34,6 +34,10 @@ public class Building : MonoBehaviour
     [SerializeField] private int consumableType;
     [SerializeField] private int consumableQuant;
 
+    // Beds (if there are any)
+    public int bedsCount;
+    private Bed[] beds;
+
     private void Start()
     {
         // Get ref to clickable
@@ -42,6 +46,9 @@ public class Building : MonoBehaviour
         myClickable.myTask = new Task(1, 2, buildDifficulty, gameObject);
         // Find communemanager
         myCommuneManager = GameObject.FindWithTag("CommuneManager").GetComponent<CommuneManager>();
+
+        // Initialise beds with empty beds
+        beds = new Bed[bedsCount];
     }
 
     private void Update()
