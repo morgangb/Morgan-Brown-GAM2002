@@ -9,10 +9,14 @@ public class Building : MonoBehaviour
 {
     // Difficulty; how long to build
     [SerializeField] private float buildDifficulty = 1f;
+
     // Difficulty; how long to use
     [SerializeField] private float useDifficulty = 1f;
     // Skill to use
     [SerializeField] private int skill = 0;
+
+    // How many resources will be used when building
+    public int[] buildResources;
 
     // boolean that measures if this is built
     public bool built = false;
@@ -26,14 +30,6 @@ public class Building : MonoBehaviour
     // Store ref to the communemanager
     private CommuneManager myCommuneManager;
 
-    // Determine what resource to give and how much
-    [SerializeField] private int resourceType;
-    [SerializeField] private int resourceQuant;
-
-    // Determine what consumables to give and how much
-    [SerializeField] private int consumableType;
-    [SerializeField] private int consumableQuant;
-
     // Beds (if there are any)
     public int bedsCount;
     private Bed[] beds;
@@ -44,6 +40,7 @@ public class Building : MonoBehaviour
         myClickable = GetComponent<Clickable>();
         // Set clickable's task to building this gameObject at the specified difficulty
         myClickable.myTask = new Task(1, 2, buildDifficulty, gameObject);
+
         // Find communemanager
         myCommuneManager = GameObject.FindWithTag("CommuneManager").GetComponent<CommuneManager>();
 
@@ -59,16 +56,23 @@ public class Building : MonoBehaviour
 
     public void Build()
     {
-        // Set that this building has been built
-        built = true;
-        // Set clickable's task to using this gameObject at the specified difficulty
-        myClickable.myTask = new Task(2, skill, buildDifficulty, gameObject);
+        // Build only if sufficient resources are had
+        if (myCommuneManager.CheckResources(buildResources))
+        {
+            // Set that this building has been built
+            built = true;
+
+            // Set clickable's task to using this gameObject at the specified difficulty
+            myClickable.myTask = new Task(2, skill, buildDifficulty, gameObject);
+        
+            // Remove used resources
+            myCommuneManager.ChangeResources(buildResources, true);
+        }
     }
 
     public void Use() 
     {
         // Give resource & consumable in communemanager
-        myCommuneManager.resourcesCount[resourceType] += resourceQuant;
-        myCommuneManager.consumableNeeds[consumableType] += consumableQuant;
+        myCommuneManager.ChangeResources(myClickable.resources, false);
     }
 }

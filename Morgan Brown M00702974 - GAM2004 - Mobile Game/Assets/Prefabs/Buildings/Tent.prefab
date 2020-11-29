@@ -184,11 +184,9 @@ MonoBehaviour:
   buildDifficulty: 1
   useDifficulty: 0
   skill: 0
+  buildResources: 00000000000000000100000000000000
+  built: 0
   buildMarker: {fileID: 385879214729309270}
-  resourceType: 0
-  resourceQuant: 0
-  consumableType: 0
-  consumableQuant: 0
   bedsCount: 1
 --- !u!114 &385879213826214363
 MonoBehaviour:
@@ -202,6 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5376b35c78e786fa6d58a6d4453a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resources: 
   taskMarker: {fileID: 385879213663545179}
 --- !u!61 &385879213826214341
 BoxCollider2D:

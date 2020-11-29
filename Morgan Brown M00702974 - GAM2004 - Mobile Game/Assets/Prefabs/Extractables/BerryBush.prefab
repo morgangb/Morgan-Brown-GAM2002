@@ -180,10 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cc8e736086e92271be058b515c7641e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceType: 0
-  resourceQuant: 1
-  consumableType: 0
-  consumableQuant: 1
   skill: 0
   difficulty: 1
 --- !u!61 &1870482806732561555
@@ -224,4 +220,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5376b35c78e786fa6d58a6d4453a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resources: 01000000000000000100000000000000
   taskMarker: {fileID: 5784402894159178175}

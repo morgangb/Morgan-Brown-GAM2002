@@ -16,11 +16,8 @@ public class CommuneManager : MonoBehaviour
 
     };
 
-    // Needs variables
-    public int[] consumableNeeds = new int[2];
-
     // Resources variables
-    public int[] resourcesCount = new int[2];
+    public int[] resourcesCount = new int[4];
 
     // "Readouts" (basically counts of how many of a thing there is)
     [Header("Readouts")]
@@ -28,12 +25,9 @@ public class CommuneManager : MonoBehaviour
     public int time = 0;
     private int people = 0;
     
-    // UI variables
-    [Header("Consumable Needs UI")]
-    [SerializeField] private TMP_Text[] consumableNeedsTxt = new TMP_Text[2];
-
+    // UI Variables
     [Header("Resources UI")]
-    [SerializeField] private TMP_Text[] resourcesCountTxt = new TMP_Text[2];
+    [SerializeField] private TMP_Text[] resourcesCountTxt = new TMP_Text[4];
 
     [Header("Readouts")]
     [SerializeField] private TMP_Text bedTxt;
@@ -79,12 +73,6 @@ public class CommuneManager : MonoBehaviour
 
     private void Update()
     {
-        // Set consumableNeedsTxt to consumableNeeds
-        for (int i = 0; i < consumableNeeds.Length; i++)
-        {
-            consumableNeedsTxt[i].text = consumableNeeds[i].ToString();
-        }
-
         // Set resourcesCountTxt to resourcesCount
         for (int i = 0; i < resourcesCount.Length; i++)
         {
@@ -134,5 +122,36 @@ public class CommuneManager : MonoBehaviour
             taskRemoved = true;
         }
         return taskRemoved;
+    }
+
+    public void ChangeResources (int[] newResources, bool remove)
+    {
+        // Add to resources the newResources or remove them
+        for (int i = 0; i < newResources.Length; i++)
+        {
+            if (remove)
+            {
+                resourcesCount[i] -= newResources[i];
+            }
+            else
+            {
+                resourcesCount[i] += newResources[i];
+            }
+        }
+    }
+
+    public bool CheckResources (int[] checkResources)
+    {
+        // Check if the player has less than the required resources
+        for (int i = 0; i < checkResources.Length; i++)
+        {
+            if (resourcesCount[i] < checkResources[i])
+            {
+                return false;
+            }
+        }
+
+        // Return true otherwise
+        return true;
     }
 }

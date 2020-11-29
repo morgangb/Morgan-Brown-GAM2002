@@ -98,10 +98,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cc8e736086e92271be058b515c7641e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceType: 0
-  resourceQuant: 1
-  consumableType: 0
-  consumableQuant: 0
   skill: 0
   difficulty: 1
 --- !u!61 &1680151066786140481
@@ -142,6 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5376b35c78e786fa6d58a6d4453a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resources: 00000000000000000100000000000000
   taskMarker: {fileID: 6837028852981851245}
 --- !u!1 &6837028852981851245
 GameObject:

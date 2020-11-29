@@ -4,16 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace BuildingTheCommune {
-    // Needs enum for finding needs quickly
-    public enum NEEDS
-    {
-        FOOD,
-        WATER
-    }
-
     // Resources enum for finding resources quickly
     public enum RESOURCES
     {
+        FOOD,
+        WATER,
         WOOD,
         ROCK
     }

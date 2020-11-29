@@ -5,6 +5,9 @@ using BuildingTheCommune;
 
 public class Clickable : MonoBehaviour
 {
+    // Determine how many of each resource to give
+    public int[] resources;
+
     // Store task to add / remove
     public Task myTask;
 
@@ -16,7 +19,9 @@ public class Clickable : MonoBehaviour
 
     private void Start()
     {
+        // Initialise with task marker off
         taskMarker.SetActive(false);
+
         // Find communemanager
         myCommuneManager = GameObject.FindWithTag("CommuneManager").GetComponent<CommuneManager>();
     }
