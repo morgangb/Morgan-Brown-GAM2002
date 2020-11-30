@@ -8,8 +8,8 @@ using BuildingTheCommune;
 public class ExtractableResource : MonoBehaviour
 {
     // Determine how extraction works
-    [SerializeField] private int skill;
-    [SerializeField] private float difficulty = 1f;
+    public int skill;
+    public float difficulty = 1f;
 
     // Store ref to the communemanager
     private CommuneManager myCommuneManager;

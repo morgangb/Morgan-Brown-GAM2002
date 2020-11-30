@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
-    // Last mouse position
-    private Vector2 lastMousePos;
+    // Origin of mouse for panning
+    private Vector2 mousePosOrigin;
 
     // Speed at which to move when dragging
-    [SerializeField] private float mouseMoveSpd = 0.05f;
+    [SerializeField] private float mouseMoveSpd = 1f;
+    
+    // Speed at which to zoom
+    [SerializeField] private float mouseZoomSpd = 1f;
 
     // Foundation to be placed
     public GameObject foundationPrefab = null;
@@ -17,10 +20,19 @@ public class CameraController : MonoBehaviour
     // Image for foundation currently held
     [SerializeField] private Image foundationImage;
 
+    // Ref to camera component on this gameObject
+    private Camera myCam;
+
+    private void Start()
+    {
+        // Get a reference to camera component on this gameobject
+        myCam = GetComponent<Camera>();
+    }
+
     private void Update()
     {
         // Reset var by which to move
-        var move = Vector2.zero;
+        var move = Vector3.zero;
 
         // Switch input by platform
         switch (Application.platform)
@@ -34,8 +46,11 @@ public class CameraController : MonoBehaviour
 
                 // Cast mouse to ray
                 RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
-                if(Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0))
                 {
+                    // Get mouse position at moment that input is received
+                    mousePosOrigin = mousePos2D;
+
                     if (foundationPrefab == null && hit)
                     {
                         // Tell hit it's been clicked
@@ -50,14 +65,15 @@ public class CameraController : MonoBehaviour
                     }
                 }
 
-                // Move while the mouse button is down
-                if (Input.GetMouseButton(1))
+                // Move while mouse button is down
+                if (Input.GetMouseButton(0))
                 {
-                    move = (lastMousePos - mousePos2D) * mouseMoveSpd;
+                    transform.Translate((mousePosOrigin - mousePos2D) * mouseMoveSpd);
                 }
 
-                // Make last mouse pos current mouse pos
-                lastMousePos = mousePos2D;
+                // Zoom based on scroll wheel input
+                myCam.orthographicSize = Mathf.Clamp(myCam.orthographicSize - (Input.mouseScrollDelta.y * mouseZoomSpd), 3, 25);
+
                 break;
         }
         
@@ -69,9 +85,6 @@ public class CameraController : MonoBehaviour
         {
             foundationImage.enabled = false;
         }
-
-        // Apply movement
-        transform.Translate(move);
     }
 
     public void SetFoundationPrefab (GameObject _foundationPrefab)

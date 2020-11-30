@@ -755,7 +755,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ecc7f7cd32df97b8b2f034722fcbfbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseMoveSpd: 0.1
+  mouseMoveSpd: 1
+  mouseZoomSpd: 1
   foundationPrefab: {fileID: 0}
   foundationImage: {fileID: 1070707838}
 --- !u!20 &519420031
@@ -785,7 +786,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4004,7 +4005,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstNames: []
   surNames: []
-  resourcesCount: 00000000000000000000000000000000
+  resourcesCount: 05000000050000000500000005000000
+  resourcesNeeded: 00000000000000000000000000000000
   time: 0
   resourcesCountTxt:
   - {fileID: 477940433}

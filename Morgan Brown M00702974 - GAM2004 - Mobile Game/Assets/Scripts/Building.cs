@@ -8,12 +8,12 @@ using UnityEngine.UI;
 public class Building : MonoBehaviour
 {
     // Difficulty; how long to build
-    [SerializeField] private float buildDifficulty = 1f;
+    public float buildDifficulty = 1f;
 
     // Difficulty; how long to use
-    [SerializeField] private float useDifficulty = 1f;
+    public float useDifficulty = 1f;
     // Skill to use
-    [SerializeField] private int skill = 0;
+    public int skill = 0;
 
     // How many resources will be used when building
     public int[] buildResources;

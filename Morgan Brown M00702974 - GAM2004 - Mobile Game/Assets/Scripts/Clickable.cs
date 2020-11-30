@@ -5,7 +5,7 @@ using BuildingTheCommune;
 
 public class Clickable : MonoBehaviour
 {
-    // Determine how many of each resource to give
+    // Determine how many of each resource to give for use/extract
     public int[] resources;
 
     // Store task to add / remove

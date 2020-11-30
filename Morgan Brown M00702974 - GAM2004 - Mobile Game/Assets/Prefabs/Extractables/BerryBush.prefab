@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 1870482806732561554}
   m_Layer: 0
   m_Name: BerryBush
-  m_TagString: Untagged
+  m_TagString: Extractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

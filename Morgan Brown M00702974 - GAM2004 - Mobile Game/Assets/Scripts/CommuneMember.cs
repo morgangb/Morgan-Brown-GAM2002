@@ -15,6 +15,9 @@ public class CommuneMember : MonoBehaviour
     public int[] abilities = {1, 1, 1, 1};
     public int[] enjoyment = {1, 1, 1, 1};
     
+    // Member satisfaction level (between -100 and 100)
+    public int satisfaction = 0;
+    
     // Movement spd
     [SerializeField] private float moveSpd = 1f;
 
@@ -29,17 +32,106 @@ public class CommuneMember : MonoBehaviour
         // Find task if there is no current task, otherwise, do current task
         if (targetTask == null)
         {
-            // Get task from queue if there is a task in the queue, otherwise make own task
+            // Get task from queue if there is a task in the queue; if none can be found or none are good, make own task
             if (myCommuneManager.taskQueue.Count > 0) 
-            {
-                targetTask = myCommuneManager.taskQueue[0];
-                // Set targetTask's member to this, so that it knows who is doing it
-                targetTask.member = gameObject;
-            }
-            else
-            {
+            {                
+                // Look through task queue for tasks; do the most enjoyable one that's earliest in the queue or the most necessary one
+                foreach (Task task in myCommuneManager.taskQueue)
+                {
+                    // Check that the task has noone assigned to it
+                    if (task.member == null) {
+                        // Decide what to do based on enjoyment
+                        switch (enjoyment[task.skill])
+                        {
+                            // Do non-enjoyable tasks only if necessary
+                            case 0:
+                                for (int i = 0; i < myCommuneManager.resourcesNeeded.Length; i++)
+                                {
+                                    if (myCommuneManager.resourcesNeeded[i] > 0 && task.target.GetComponent<Clickable>().resources[i] > 0)
+                                    {
+                                        targetTask = task;
+                                    }
+                                }
+                                break;
+                            // Do neutral & enjoyable tasks if assigned
+                            default:
+                                targetTask = task;
+                                break;
+                        }
+                    }
 
+                    // Once a task has been found, break the loop
+                    if (targetTask != null)
+                    {
+                        break;
+                    }
+                }
             }
+
+            // If targetTask is still null then no task has been found; make own task
+            if (targetTask == null)
+            {
+                // Keep arrays of buildings and extractable resources 
+                GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
+                GameObject[] extractables = GameObject.FindGameObjectsWithTag("Extractable");
+
+                // Find an enjoyable skill (we do this twice, once for high satisfaction, once for mid)
+                for (int j = 0; j < 2; j++)
+                {
+                    for (int k = 0; k < enjoyment.Length; k++)
+                    {
+                        if (enjoyment[k] == 2 - j)
+                        {
+                            // Building - find a non-built building and build it
+                            if (k == 2 - j)
+                            {
+                                foreach (GameObject building in buildings)
+                                {
+                                    if (!building.GetComponent<Building>().built)
+                                    {
+                                        targetTask = new Task(1, 2, building.GetComponent<Building>().buildDifficulty, building);
+                                        break;
+                                    }
+                                }
+                            }
+                            // Otherwise just use / extract whatever object
+                            else
+                            {
+                                // Use building if there is a usable building
+                                foreach (GameObject building in buildings)
+                                {
+                                    if (building.GetComponent<Building>().built && building.GetComponent<Building>().skill == k)
+                                    {
+                                        targetTask = new Task(2, k, building.GetComponent<Building>().useDifficulty, building);
+                                        break;
+                                    }
+                                }
+                                
+                                // Extract resource if there is an extractable resource and a building is not being used
+                                if (targetTask == null)
+                                {
+                                    foreach (GameObject extractable in extractables)
+                                    {
+                                        if (extractable.GetComponent<ExtractableResource>().skill == k)
+                                        {
+                                            targetTask = new Task(0, k, extractable.GetComponent<ExtractableResource>().difficulty, extractable);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (targetTask != null)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Set targetTask's member to this gameObject so that it knows who's doing it
+            targetTask.member = gameObject;
         }
         else
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -18,6 +19,9 @@ public class CommuneManager : MonoBehaviour
 
     // Resources variables
     public int[] resourcesCount = new int[4];
+
+    // An array to store the amount of resources needed based on the current population and taskQueue
+    public int[] resourcesNeeded = new int[4];
 
     // "Readouts" (basically counts of how many of a thing there is)
     [Header("Readouts")]
@@ -73,6 +77,7 @@ public class CommuneManager : MonoBehaviour
 
     private void Update()
     {
+
         // Set resourcesCountTxt to resourcesCount
         for (int i = 0; i < resourcesCount.Length; i++)
         {
@@ -92,6 +97,34 @@ public class CommuneManager : MonoBehaviour
         
         // Set beds text to beds
         bedTxt.text = beds.ToString();
+
+        // Set the resources needed based on commune members and tasks
+
+        // Reset resources needed
+        Array.Clear(resourcesNeeded, 0, resourcesNeeded.Length);
+
+        // Set the consumable resources to the number of commune members, since these will be consumed daily
+        resourcesNeeded[0] = resourcesNeeded[1] = communeMembers.Length;
+
+        // Set the building resources to the resources needed by the tasks in the task queue
+        foreach (Task task in taskQueue)
+        {
+            // If the task's skill is building
+            if (task.skill == 2) 
+            {
+                // Loop through the build resources of the task's target and add them to the resourcesNeeded array
+                for (int i = 0; i < task.target.GetComponent<Building>().buildResources.Length; i++)
+                {
+                    resourcesNeeded[i] += task.target.GetComponent<Building>().buildResources[i];
+                }
+            }
+        }
+
+        // Subtract currently held resources from resources needed
+        for (int i = 0; i < resourcesNeeded.Length; i++)
+        {
+            resourcesNeeded[i] -= resourcesCount[i];
+        }
     }
 
     public void AddTask(Task task)
