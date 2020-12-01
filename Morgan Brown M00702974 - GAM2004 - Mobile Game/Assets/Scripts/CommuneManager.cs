@@ -26,8 +26,8 @@ public class CommuneManager : MonoBehaviour
     // "Readouts" (basically counts of how many of a thing there is)
     [Header("Readouts")]
     private int beds = 0;
-    public int time = 0;
-    private int people = 0;
+    public float time = 0;
+    public int days = 0;
     
     // UI Variables
     [Header("Resources UI")]
@@ -77,6 +77,8 @@ public class CommuneManager : MonoBehaviour
 
     private void Update()
     {
+        // Increase time by time so that 1 in-game hour = 1 minute
+        time += Time.deltaTime / 60;
 
         // Set resourcesCountTxt to resourcesCount
         for (int i = 0; i < resourcesCount.Length; i++)
@@ -98,8 +100,21 @@ public class CommuneManager : MonoBehaviour
         // Set beds text to beds
         bedTxt.text = beds.ToString();
 
-        // Set the resources needed based on commune members and tasks
+        // Set peopleTxt to number of communeMembers
+        peopleTxt.text = communeMembers.Length.ToString();
 
+        // Go to next day
+        if (time >= 16)
+        {
+            days += 1;
+            time = 0;
+        }
+
+        // Generate timeTxt from time
+        var hour = Mathf.Floor(time) + 6;
+        timeTxt.text = hour.ToString("00") + ":" + Mathf.Floor((time - hour) * 60f).ToString("00");
+
+        // Set the resources needed based on commune members and tasks
         // Reset resources needed
         Array.Clear(resourcesNeeded, 0, resourcesNeeded.Length);
 

@@ -63,7 +63,7 @@ public class Building : MonoBehaviour
             built = true;
 
             // Set clickable's task to using this gameObject at the specified difficulty
-            myClickable.myTask = new Task(2, skill, buildDifficulty, gameObject);
+            myClickable.myTask = new Task(2, skill, useDifficulty, gameObject);
         
             // Remove used resources
             myCommuneManager.ChangeResources(buildResources, true);

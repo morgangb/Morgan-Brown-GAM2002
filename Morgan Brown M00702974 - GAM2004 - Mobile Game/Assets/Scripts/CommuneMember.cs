@@ -100,7 +100,7 @@ public class CommuneMember : MonoBehaviour
                                 // Use building if there is a usable building
                                 foreach (GameObject building in buildings)
                                 {
-                                    if (building.GetComponent<Building>().built && building.GetComponent<Building>().skill == k)
+                                    if (building.GetComponent<Building>().built && building.GetComponent<Building>().skill == k && building.GetComponent<Building>().useDifficulty > 0f)
                                     {
                                         targetTask = new Task(2, k, building.GetComponent<Building>().useDifficulty, building);
                                         break;
