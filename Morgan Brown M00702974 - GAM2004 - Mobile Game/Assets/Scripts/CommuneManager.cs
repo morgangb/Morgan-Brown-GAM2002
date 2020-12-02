@@ -28,6 +28,8 @@ public class CommuneManager : MonoBehaviour
     private int beds = 0;
     public float time = 0;
     public int days = 0;
+    [SerializeField] private GameObject messagePanel;
+    [SerializeField] private TMP_Text messageTxt;
     
     // UI Variables
     [Header("Resources UI")]
@@ -106,13 +108,14 @@ public class CommuneManager : MonoBehaviour
         // Go to next day
         if (time >= 16)
         {
+            DisplayMessage("Day " + days.ToString() + " complete!");
             days += 1;
             time = 0;
         }
 
         // Generate timeTxt from time
         var hour = Mathf.Floor(time) + 6;
-        timeTxt.text = hour.ToString("00") + ":" + Mathf.Floor((time - hour) * 60f).ToString("00");
+        timeTxt.text = hour.ToString("00") + ":" + Mathf.Floor((time + 6f - hour) * 60f).ToString("00");
 
         // Set the resources needed based on commune members and tasks
         // Reset resources needed
@@ -201,5 +204,23 @@ public class CommuneManager : MonoBehaviour
 
         // Return true otherwise
         return true;
+    }
+
+    public void DisplayMessage (string message)
+    {
+        // Pause game
+        Time.timeScale = 0f;
+        // Activate message panel
+        messagePanel.SetActive(true);
+        // Set message panel text
+        messageTxt.text = message;
+    }
+
+    public void CloseMessage ()
+    {
+        // Resume game
+        Time.timeScale = 1f;
+        // Close message panel
+        messagePanel.SetActive(false);
     }
 }
