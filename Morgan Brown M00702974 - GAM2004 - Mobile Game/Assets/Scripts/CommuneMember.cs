@@ -142,7 +142,13 @@ public class CommuneMember : MonoBehaviour
             }
             else 
             {
+                // Do task
                 targetTask.difficulty -= (1f + abilities[targetTask.skill]) * 0.5f * Time.deltaTime;
+
+                // Change satisfaction
+                satisfaction += (enjoyment[targetTask.skill] - 1f) * Time.deltaTime;
+
+                // If task is less than 0, it's done
                 if (targetTask.difficulty <= 0f)
                 {
                     targetTask.Complete();

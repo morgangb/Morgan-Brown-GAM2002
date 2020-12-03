@@ -40,6 +40,10 @@ public class CommuneManager : MonoBehaviour
     [SerializeField] private TMP_Text timeTxt;
     [SerializeField] private TMP_Text peopleTxt;
 
+    [Header("Buttons")]
+    [SerializeField] private ToggleButton mute;
+    [SerializeField] private ToggleButton paused;
+
     // Task queue, keeps a list of tasks
     public List<Task> taskQueue = new List<Task>();
 
@@ -79,6 +83,26 @@ public class CommuneManager : MonoBehaviour
 
     private void Update()
     {
+        // Pause game with pause button
+        if (paused.isOn)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+
+        // Mute game with mute button
+        if (mute.isOn)
+        {
+            AudioListener.volume = 0f;
+        }
+        else 
+        {
+            AudioListener.volume = 1f;
+        }
+
         // Increase time by time so that 1 in-game hour = 1 minute
         time += Time.deltaTime / 60;
 
