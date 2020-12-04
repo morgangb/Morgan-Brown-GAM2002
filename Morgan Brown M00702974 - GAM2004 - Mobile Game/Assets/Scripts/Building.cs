@@ -21,6 +21,9 @@ public class Building : MonoBehaviour
     // boolean that measures if this is built
     public bool built = false;
 
+    // Measures if the building is cooling down; if above 0, cannot be used
+    public float coolDown = 0f;
+
     // Marker that building is under construction
     [SerializeField] private GameObject buildMarker;
 
@@ -50,6 +53,12 @@ public class Building : MonoBehaviour
 
     private void Update()
     {
+        // Decrease coolDown
+        if (coolDown > 0f)
+        {
+            coolDown -= Time.deltaTime;
+        }
+
         // Activate buildMarker if building is under construction
         buildMarker.SetActive(!built);
     }
@@ -74,5 +83,8 @@ public class Building : MonoBehaviour
     {
         // Give resource & consumable in communemanager
         myCommuneManager.ChangeResources(myClickable.resources, false);
+
+        // Set coolDown
+        coolDown = useDifficulty * 2f;
     }
 }

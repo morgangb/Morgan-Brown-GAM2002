@@ -22,6 +22,8 @@ public class CommuneManager : MonoBehaviour
 
     // An array to store the amount of resources needed based on the current population and taskQueue
     public int[] resourcesNeeded = new int[4];
+    // An array to store the maximum number of each resource
+    public int[] resourcesMax = new int[4];
 
     // "Readouts" (basically counts of how many of a thing there is)
     [Header("Readouts")]
@@ -132,7 +134,45 @@ public class CommuneManager : MonoBehaviour
         // Go to next day
         if (time >= 16)
         {
+            // Inform player
             DisplayMessage("Day " + days.ToString() + " complete!");
+
+            // Reduce conusmables and needs for each communemember
+            int tempBeds = beds;
+
+            for (int i = 0; i < communeMembers.Length; i++)
+            {
+                // Reduce beds or cause dissatisfaction
+                if (tempBeds > 0)
+                {
+                    tempBeds -= 1;
+                }
+                else
+                {
+                    communeMembers[i].GetComponent<CommuneMember>().satisfaction -= 10f;
+                }
+
+                // Reduce consumables or cause dissatisfaction
+                if (resourcesCount[0] > 0)
+                {
+                    resourcesCount[0] -= 1;
+                }
+                else
+                {
+                    communeMembers[i].GetComponent<CommuneMember>().satisfaction -= 10f;
+                }
+
+                if (resourcesCount[1] > 0)
+                {
+                    resourcesCount[1] -= 1;
+                }
+                else
+                {
+                    communeMembers[i].GetComponent<CommuneMember>().satisfaction -= 10f;
+                }
+            }
+
+            // Reset time to morning on next day
             days += 1;
             time = 0;
         }
@@ -166,6 +206,12 @@ public class CommuneManager : MonoBehaviour
         for (int i = 0; i < resourcesNeeded.Length; i++)
         {
             resourcesNeeded[i] -= resourcesCount[i];
+        }
+
+        // Set the maximum number of resources to be held
+        for (int i = 0; i < resourcesMax.Length; i++)
+        {
+            resourcesMax[i] = communeMembers.Length * 7;
         }
     }
 

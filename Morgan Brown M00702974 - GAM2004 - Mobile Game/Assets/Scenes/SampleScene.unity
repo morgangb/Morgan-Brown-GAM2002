@@ -4404,8 +4404,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstNames: []
   surNames: []
-  resourcesCount: 05000000050000000500000005000000
+  resourcesCount: 00000000000000000000000000000000
   resourcesNeeded: 00000000000000000000000000000000
+  resourcesMax: 00000000000000000000000000000000
   time: 0
   days: 0
   messagePanel: {fileID: 1570781204}
@@ -5292,55 +5293,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5591369651730787520, guid: 712b3add82136046c9b1f73a71d5fcf9,
-        type: 3}
-      propertyPath: abilities.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5591369651730787520, guid: 712b3add82136046c9b1f73a71d5fcf9,
-        type: 3}
-      propertyPath: enjoyment.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5591369651730787520, guid: 712b3add82136046c9b1f73a71d5fcf9,
-        type: 3}
-      propertyPath: abilities.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5591369651730787520, guid: 712b3add82136046c9b1f73a71d5fcf9,
-        type: 3}
-      propertyPath: enjoyment.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5591369651730787520, guid: 712b3add82136046c9b1f73a71d5fcf9,
-        type: 3}
-      propertyPath: abilities.Array.data[2]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5591369651730787520, guid: 712b3add82136046c9b1f73a71d5fcf9,
-        type: 3}
-      propertyPath: abilities.Array.data[3]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5591369651730787520, guid: 712b3add82136046c9b1f73a71d5fcf9,
-        type: 3}
-      propertyPath: enjoyment.Array.data[2]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5591369651730787520, guid: 712b3add82136046c9b1f73a71d5fcf9,
-        type: 3}
-      propertyPath: enjoyment.Array.data[3]
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5591369651730787523, guid: 712b3add82136046c9b1f73a71d5fcf9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.58
+      value: 1.398
       objectReference: {fileID: 0}
     - target: {fileID: 5591369651730787523, guid: 712b3add82136046c9b1f73a71d5fcf9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.26
+      value: -1.936
       objectReference: {fileID: 0}
     - target: {fileID: 5591369651730787523, guid: 712b3add82136046c9b1f73a71d5fcf9,
         type: 3}

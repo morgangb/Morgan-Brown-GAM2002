@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5376b35c78e786fa6d58a6d4453a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resources: 
+  resources: 00000000000000000000000000000000
   taskMarker: {fileID: 385879213663545179}
 --- !u!61 &385879213826214341
 BoxCollider2D:

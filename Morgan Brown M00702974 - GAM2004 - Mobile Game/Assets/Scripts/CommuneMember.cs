@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using BuildingTheCommune;
+using TMPro;
 
 public class CommuneMember : MonoBehaviour
 {
+    // Name of this commune member
+    public string name;
+    
     // Task which the member is trying to do
     public Task targetTask = null;
 
@@ -14,9 +18,16 @@ public class CommuneMember : MonoBehaviour
     // Member skill stats
     public int[] abilities = {1, 1, 1, 1};
     public int[] enjoyment = {1, 1, 1, 1};
+
+    // Stat displays
+    [SerializeField] private GameObject statsDisplay;
+    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private TMP_Text satisfactionText;
+    [SerializeField] private TMP_Text[] abilitiesText;
+    [SerializeField] private TMP_Text[] enjoymentText;
     
     // Member satisfaction level (between -100 and 100)
-    public int satisfaction = 0;
+    public float satisfaction = 0;
     
     // Movement spd
     [SerializeField] private float moveSpd = 1f;
@@ -32,7 +43,7 @@ public class CommuneMember : MonoBehaviour
         // Find task if there is no current task, otherwise, do current task
         if (targetTask == null)
         {
-            // Get task from queue if there is a task in the queue; if none can be found or none are good, make own task
+            // Get task from queue if there is a task in the queue
             if (myCommuneManager.taskQueue.Count > 0) 
             {                
                 // Look through task queue for tasks; do the most enjoyable one that's earliest in the queue or the most necessary one
@@ -100,7 +111,7 @@ public class CommuneMember : MonoBehaviour
                                 // Use building if there is a usable building
                                 foreach (GameObject building in buildings)
                                 {
-                                    if (building.GetComponent<Building>().built && building.GetComponent<Building>().skill == k && building.GetComponent<Building>().useDifficulty > 0f)
+                                    if (building.GetComponent<Building>().built && building.GetComponent<Building>().skill == k && building.GetComponent<Building>().useDifficulty > 0f && building.GetComponent<Building>().coolDown <= 0f)
                                     {
                                         targetTask = new Task(2, k, building.GetComponent<Building>().useDifficulty, building);
                                         break;
@@ -130,8 +141,11 @@ public class CommuneMember : MonoBehaviour
                 }
             }
 
-            // Set targetTask's member to this gameObject so that it knows who's doing it
-            targetTask.member = gameObject;
+            if (targetTask != null) 
+            {
+                // Set targetTask's member to this gameObject so that it knows who's doing it
+                targetTask.member = gameObject;
+            }
         }
         else
         {
@@ -157,5 +171,25 @@ public class CommuneMember : MonoBehaviour
                 }
             }
         }
+
+        // Set stat texts
+        nameText.text = name;
+        satisfactionText.text = Mathf.Round(satisfaction).ToString();
+        
+        for (int i = 0; i < enjoymentText.Length; i++)
+        {
+            enjoymentText[i].text = enjoyment[i].ToString();
+        }
+
+        for (int j = 0; j < abilitiesText.Length; j++)
+        {
+            abilitiesText[j].text = abilities[j].ToString();
+        }
+    }
+
+    public void Clicked()
+    {
+        // On clicked toggle stats
+        statsDisplay.SetActive(!statsDisplay.active);
     }
 }
