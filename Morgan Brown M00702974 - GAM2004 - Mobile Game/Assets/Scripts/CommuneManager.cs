@@ -9,12 +9,24 @@ using BuildingTheCommune;
 public class CommuneManager : MonoBehaviour
 {
     // Store arrays of names
-    public string[] firstNames = {
-        
-    };
-
-    public string[] surNames = {
-
+    public string[] names = {
+        "Judith",
+        "Slavoj",
+        "Ernesto",
+        "Noam",
+        "Cornel",
+        "Tavis",
+        "Mohandas",
+        "Emma",
+        "Abbie",
+        "Peter",
+        "Karl",
+        "Jean",
+        "Paul",
+        "Leo",
+        "Fred",
+        "Rosa",
+        "Angela"
     };
 
     // Resources variables
@@ -51,6 +63,9 @@ public class CommuneManager : MonoBehaviour
 
     // List of Commune Members
     public GameObject[] communeMembers;
+
+    // Commune member prefab
+    [SerializeField] private GameObject communeMember;
     
     // Make the CommuneManager a Singleton
     // Find any other instances of CommuneManager
@@ -79,6 +94,10 @@ public class CommuneManager : MonoBehaviour
 
     private void Start()
     {
+        NewMember();
+        NewMember();
+        NewMember();
+
         // Get a list of commune members at start of game
         communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
     }
@@ -215,16 +234,29 @@ public class CommuneManager : MonoBehaviour
         }
     }
 
-    public void AddTask(Task task)
+    public bool AddTask (Task task)
     {
-        // Add a task to the task queue with parameters given
-        taskQueue.Add(task);
+        // Set task not added as default
+        bool taskAdded = false;
+
+        // Check the taskqueue does not contain the task referenced
+        if (!taskQueue.Contains(task))
+        {
+            // Add a task to the task queue with parameters given
+            taskQueue.Add(task);
+            
+            // Task has been added successfully
+            taskAdded = true;
+        }
+
+        return taskAdded;
     }
 
-    public bool RemoveTask(Task task)
+    public bool RemoveTask (Task task)
     {
         // Set task not removed as default
         bool taskRemoved = false;
+
         // Check for task in taskqueue, if found delete it and return true, else return false
         while (taskQueue.Remove(task))
         {
@@ -242,6 +274,8 @@ public class CommuneManager : MonoBehaviour
             // Mark that task has been removed
             taskRemoved = true;
         }
+
+        // Return whether or not the task has been removed successfully
         return taskRemoved;
     }
 
@@ -292,5 +326,51 @@ public class CommuneManager : MonoBehaviour
         Time.timeScale = 1f;
         // Close message panel
         messagePanel.SetActive(false);
+    }
+
+    public void NewMember ()
+    {
+        // Creates a new commune member
+        GameObject newMember = Instantiate(communeMember);
+
+        // Set name randomly
+        newMember.GetComponent<CommuneMember>().name = names[(int)Mathf.Round(UnityEngine.Random.Range(0f, names.Length - 1f))];
+
+        // Set abilities and enjoyment randomly
+        newMember.GetComponent<CommuneMember>().abilities = SetSkills(newMember.GetComponent<CommuneMember>().abilities);
+        newMember.GetComponent<CommuneMember>().enjoyment = SetSkills(newMember.GetComponent<CommuneMember>().enjoyment);
+
+        // Re-get communeMembers
+        communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
+    }
+
+    public int[] SetSkills (int[] skills)
+    {
+        // Set points to the length of skills
+        int points = skills.Length;
+
+        // While not all points have been spent
+        while (points > 0)
+        {
+            // Loop through all skills in array
+            for (int i = 0; i < skills.Length; i++)
+            {
+                // 50/50 chance to spend point
+                if (UnityEngine.Random.Range(0f, 1f) > 0.5f && skills[i] < 2)
+                {
+                    skills[i] += 1;
+                    points -= 1;
+                }
+
+                // Break out of loop if all points are spent
+                if (points <= 0)
+                {
+                    break;
+                }
+            }
+        }
+
+        // Return skills now points have been spent
+        return skills;
     }
 }

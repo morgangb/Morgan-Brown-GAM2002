@@ -2799,8 +2799,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Tits McGee
-  abilities: 00000000020000000000000002000000
-  enjoyment: 00000000020000000000000002000000
+  abilities: 00000000000000000000000000000000
+  enjoyment: 00000000000000000000000000000000
   statsDisplay: {fileID: 1599962294}
   nameText: {fileID: 221148699}
   satisfactionText: {fileID: 1312076019}
