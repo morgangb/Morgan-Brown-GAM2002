@@ -29,13 +29,18 @@ public class CommuneManager : MonoBehaviour
         "Angela"
     };
 
+    // Number of resources
+    public const int RESOURCESNUM = 4;
+
     // Resources variables
-    public int[] resourcesCount = new int[4];
+    public int[] resourcesCount = new int[RESOURCESNUM];
 
     // An array to store the amount of resources needed based on the current population and taskQueue
-    public int[] resourcesNeeded = new int[4];
+    public int[] resourcesNeeded = new int[RESOURCESNUM];
     // An array to store the maximum number of each resource
-    public int[] resourcesMax = new int[4];
+    public int[] resourcesMax = new int[RESOURCESNUM];
+    // An array to store the amount of resources consumed each night
+    public int[] resourcesConsumed = new int[RESOURCESNUM];
 
     // "Readouts" (basically counts of how many of a thing there is)
     [Header("Readouts")]
@@ -95,8 +100,6 @@ public class CommuneManager : MonoBehaviour
     private void Start()
     {
         NewMember();
-        NewMember();
-        NewMember();
 
         // Get a list of commune members at start of game
         communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
@@ -104,7 +107,6 @@ public class CommuneManager : MonoBehaviour
 
     private void Update()
     {
-        // Pause game with pause button
         if (paused.isOn)
         {
             Time.timeScale = 0f;
@@ -124,8 +126,8 @@ public class CommuneManager : MonoBehaviour
             AudioListener.volume = 1f;
         }
 
-        // Increase time by time so that 1 in-game hour = 1 minute
-        time += Time.deltaTime / 60;
+        // Increase time by time so that 4 in-game hours = 1 real-world minute
+        time += Time.deltaTime / 15;
 
         // Set resourcesCountTxt to resourcesCount
         for (int i = 0; i < resourcesCount.Length; i++)
@@ -159,8 +161,14 @@ public class CommuneManager : MonoBehaviour
             // Reduce conusmables and needs for each communemember
             int tempBeds = beds;
 
+            // Overall satisfaction; an average of the satisfaction of all members
+            float overallSatisfaction = 0f;
+
             for (int i = 0; i < communeMembers.Length; i++)
             {
+                // Bool for if the member's needs have been met today
+                bool sated = true;
+
                 // Reduce beds or cause dissatisfaction
                 if (tempBeds > 0)
                 {
@@ -168,27 +176,38 @@ public class CommuneManager : MonoBehaviour
                 }
                 else
                 {
-                    communeMembers[i].GetComponent<CommuneMember>().satisfaction -= 10f;
+                    communeMembers[i].GetComponent<CommuneMember>().satisfaction -= 25f;
+                    sated = false;
                 }
 
                 // Reduce consumables or cause dissatisfaction
-                if (resourcesCount[0] > 0)
+                for (int j = 0; j < resourcesCount.Length; j++)
                 {
-                    resourcesCount[0] -= 1;
-                }
-                else
-                {
-                    communeMembers[i].GetComponent<CommuneMember>().satisfaction -= 10f;
+                    if (resourcesCount[j] > resourcesConsumed[j])
+                    {
+                        resourcesCount[j] -= resourcesConsumed[j];
+                    }
+                    else
+                    {
+                        communeMembers[i].GetComponent<CommuneMember>().satisfaction -= 25f;
+                        sated = false;
+                    }
                 }
 
-                if (resourcesCount[1] > 0)
-                {
-                    resourcesCount[1] -= 1;
-                }
-                else
-                {
-                    communeMembers[i].GetComponent<CommuneMember>().satisfaction -= 10f;
-                }
+                // Add to overallsatisfaction the satisfaction of this members
+                overallSatisfaction += communeMembers[i].GetComponent<CommuneMember>().satisfaction;
+
+                // Add today as unsated to the member
+                communeMembers[i].GetComponent<CommuneMember>().daysUnsated += 1;
+            }
+
+            // Find average satisfaction by dividing by total number of members
+            overallSatisfaction = overallSatisfaction / communeMembers.Length;
+
+            // Add a new member if satisfaction is high
+            if (overallSatisfaction > 50f)
+            {
+                NewMember();
             }
 
             // Reset time to morning on next day
@@ -267,6 +286,7 @@ public class CommuneManager : MonoBehaviour
             {
                 if (communeMember.GetComponent<CommuneMember>().targetTask.target == task.target)
                 {
+                    communeMember.GetComponent<CommuneMember>().targetTaskIndex = -1;
                     communeMember.GetComponent<CommuneMember>().targetTask = null;
                 }
             }
@@ -313,7 +333,7 @@ public class CommuneManager : MonoBehaviour
     public void DisplayMessage (string message)
     {
         // Pause game
-        Time.timeScale = 0f;
+        paused.isOn = true;
         // Activate message panel
         messagePanel.SetActive(true);
         // Set message panel text
@@ -323,7 +343,7 @@ public class CommuneManager : MonoBehaviour
     public void CloseMessage ()
     {
         // Resume game
-        Time.timeScale = 1f;
+        paused.isOn = false;
         // Close message panel
         messagePanel.SetActive(false);
     }
@@ -339,6 +359,15 @@ public class CommuneManager : MonoBehaviour
         // Set abilities and enjoyment randomly
         newMember.GetComponent<CommuneMember>().abilities = SetSkills(newMember.GetComponent<CommuneMember>().abilities);
         newMember.GetComponent<CommuneMember>().enjoyment = SetSkills(newMember.GetComponent<CommuneMember>().enjoyment);
+
+        // Re-get communeMembers
+        communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
+    }
+
+    public void RemoveMember (GameObject member)
+    {
+        // Destroy the passed member
+        Destroy(member);
 
         // Re-get communeMembers
         communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");

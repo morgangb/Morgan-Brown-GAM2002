@@ -29,6 +29,9 @@ public class CommuneMember : MonoBehaviour
     
     // Member satisfaction level (between -100 and 100)
     public float satisfaction = 0;
+
+    // Days unsated (number of days a need has not been met)
+    public int daysUnsated = 0;
     
     // Movement spd
     [SerializeField] private float moveSpd = 1f;
@@ -75,6 +78,7 @@ public class CommuneMember : MonoBehaviour
                     // Task has been found; break out of this loop
                     if (targetTaskIndex != -1)
                     {
+                        targetTask = myCommuneManager.taskQueue[targetTaskIndex];
                         break;
                     }
                 }
@@ -118,7 +122,7 @@ public class CommuneMember : MonoBehaviour
                                 // Use building if there is a usable building
                                 foreach (GameObject building in buildings)
                                 {
-                                    if (building.GetComponent<Building>().built && building.GetComponent<Building>().skill == j && building.GetComponent<Building>().useDifficulty > 0f && building.GetComponent<Building>().coolDown <= 0f)
+                                    if (building.GetComponent<Building>().built && building.GetComponent<Building>().skill == j && building.GetComponent<Building>().useDifficulty > 0f && building.GetComponent<Building>().coolDown <= 0f && myCommuneManager.CheckResources(building.GetComponent<Building>().buildResources))
                                     {
                                         // Try to make a task, if successful, break out of loop (since a task has been found, there's no need to continue)
                                         if (MakeTask(2, j, building.GetComponent<Building>().useDifficulty, building))
@@ -134,6 +138,7 @@ public class CommuneMember : MonoBehaviour
                                     // Loop through extractables
                                     foreach (GameObject extractable in extractables)
                                     {
+                                        // If skill to extract matches focused skill
                                         if (extractable.GetComponent<ExtractableResource>().skill == j)
                                         {
                                             // Try to make a task, if successful, break out of loop (since a task has been found, there's no need to continue)
@@ -176,7 +181,7 @@ public class CommuneMember : MonoBehaviour
             {
                 transform.Translate((targetTask.target.transform.position - transform.position).normalized * moveSpd * Time.deltaTime);
             }
-            else 
+            else
             {
                 // Do task
                 targetTask.difficulty -= (1f + abilities[targetTask.skill]) * 0.5f * Time.deltaTime;
@@ -207,6 +212,12 @@ public class CommuneMember : MonoBehaviour
         for (int j = 0; j < abilitiesText.Length; j++)
         {
             abilitiesText[j].text = abilities[j].ToString();
+        }
+
+        // Leave commune if satisfaction is below -100
+        if (satisfaction <= -100f || daysUnsated > 2)
+        {
+            myCommuneManager.RemoveMember(gameObject);
         }
     }
 
