@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using BuildingTheCommune;
+using UnityEngine.SceneManagement;
 
 // A class for managing commune functions and variables needed by all controllers
 public class CommuneManager : MonoBehaviour
@@ -30,7 +31,7 @@ public class CommuneManager : MonoBehaviour
     };
 
     // Number of resources
-    public const int RESOURCESNUM = 4;
+    public const int RESOURCESNUM = 5;
 
     // Resources variables
     public int[] resourcesCount = new int[RESOURCESNUM];
@@ -107,6 +108,16 @@ public class CommuneManager : MonoBehaviour
 
     private void Update()
     {
+        // Re-get communeMembers
+        communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
+
+        // Go to gameover if necessary
+        if (communeMembers.Length <= 0)
+        {
+            SceneManager.LoadScene(2);
+        }
+
+        // Pause game if the paused button is on
         if (paused.isOn)
         {
             Time.timeScale = 0f;
@@ -126,8 +137,8 @@ public class CommuneManager : MonoBehaviour
             AudioListener.volume = 1f;
         }
 
-        // Increase time by time so that 4 in-game hours = 1 real-world minute
-        time += Time.deltaTime / 15;
+        // Increase time by time so that 8 in-game hours = 1 real-world minute
+        time += Time.deltaTime / 7.5f;
 
         // Set resourcesCountTxt to resourcesCount
         for (int i = 0; i < resourcesCount.Length; i++)
@@ -216,8 +227,7 @@ public class CommuneManager : MonoBehaviour
         }
 
         // Generate timeTxt from time
-        var hour = Mathf.Floor(time) + 6;
-        timeTxt.text = hour.ToString("00") + ":" + Mathf.Floor((time + 6f - hour) * 60f).ToString("00");
+        timeTxt.text = (Mathf.Floor(time) + 6).ToString("00") + ":00";
 
         // Set the resources needed based on commune members and tasks
         // Reset resources needed
@@ -368,9 +378,6 @@ public class CommuneManager : MonoBehaviour
     {
         // Destroy the passed member
         Destroy(member);
-
-        // Re-get communeMembers
-        communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
     }
 
     public int[] SetSkills (int[] skills)

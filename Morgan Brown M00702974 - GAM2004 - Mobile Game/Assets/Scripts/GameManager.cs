@@ -32,10 +32,4 @@ public class GameManager : MonoBehaviour
         // Don't destroy this go when loading a scene
         DontDestroyOnLoad(gameObject);
     }
-
-    public void NewGame()
-    {
-        // Load the first scene
-        SceneManager.LoadScene(1);
-    }
 }

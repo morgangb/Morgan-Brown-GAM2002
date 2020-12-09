@@ -214,7 +214,7 @@ public class CommuneMember : MonoBehaviour
             abilitiesText[j].text = abilities[j].ToString();
         }
 
-        // Leave commune if satisfaction is below -100
+        // Leave commune if satisfaction is below -100 or gone two days without needs being met.
         if (satisfaction <= -100f || daysUnsated > 2)
         {
             myCommuneManager.RemoveMember(gameObject);
