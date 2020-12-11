@@ -11,23 +11,21 @@ public class CommuneManager : MonoBehaviour
 {
     // Store arrays of names
     public string[] names = {
-        "Judith",
-        "Slavoj",
-        "Ernesto",
-        "Noam",
-        "Cornel",
-        "Tavis",
-        "Mohandas",
-        "Emma",
-        "Abbie",
-        "Peter",
-        "Karl",
-        "Jean",
-        "Paul",
-        "Leo",
-        "Fred",
-        "Rosa",
-        "Angela"
+        "Karl Marx",
+        "Mao Zedong",
+        "Leon Trotsky",
+        "Rosa Luxemburg",
+        "Ho Chi Minh",
+        "Judith Butler",
+        "Noam Chomsky",
+        "Mahatma Gandhi",
+        "Emma Glodman",
+        "Abbie Hoffman",
+        "Peter Kropotkin",
+        "Jean-Paul Sartre",
+        "Leo Tolstoy",
+        "Angela Davis",
+        "Fred Hampton"
     };
 
     // Number of resources
@@ -100,7 +98,22 @@ public class CommuneManager : MonoBehaviour
 
     private void Start()
     {
-        NewMember();
+        // Determine how many members to spawn by the current scene
+        switch(SceneManager.GetActiveScene().buildIndex)
+        {
+            case 2:
+                NewMember();
+                NewMember();
+                NewMember();
+                break;
+            case 3:
+                NewMember();
+                NewMember();
+                break;
+            case 4:
+                NewMember();
+                break;
+        }
 
         // Get a list of commune members at start of game
         communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
@@ -108,13 +121,19 @@ public class CommuneManager : MonoBehaviour
 
     private void Update()
     {
+        // Go to main menu
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(1);
+        }
+
         // Re-get communeMembers
         communeMembers = GameObject.FindGameObjectsWithTag("CommuneMember");
 
         // Go to gameover if necessary
         if (communeMembers.Length <= 0)
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(5);
         }
 
         // Pause game if the paused button is on
@@ -175,6 +194,7 @@ public class CommuneManager : MonoBehaviour
             // Overall satisfaction; an average of the satisfaction of all members
             float overallSatisfaction = 0f;
 
+            // Adjust satisfaction levels
             for (int i = 0; i < communeMembers.Length; i++)
             {
                 // Bool for if the member's needs have been met today
@@ -219,6 +239,15 @@ public class CommuneManager : MonoBehaviour
             if (overallSatisfaction > 50f)
             {
                 NewMember();
+            }
+
+            // Find extractable resources
+            var extractables = GameObject.FindGameObjectsWithTag("Extractable");
+
+            // Tell each extractable to multiply itself
+            foreach (GameObject extractable in extractables)
+            {
+                extractable.GetComponent<ExtractableResource>().Breed();
             }
 
             // Reset time to morning on next day

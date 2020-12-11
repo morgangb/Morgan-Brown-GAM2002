@@ -10,7 +10,8 @@ namespace BuildingTheCommune {
         FOOD,
         WATER,
         WOOD,
-        ROCK
+        ROCK,
+        PELT
     }
 
     // Task enum for finding tasks quickly
@@ -35,14 +36,16 @@ namespace BuildingTheCommune {
         WOODCUTTING,
         MINING,
         BUILDING,
-        HAULING
+        HAULING,
+        FARMING,
+        HUNTING
     }
 
     public class Task : IEquatable<Task>
     {
         public Task()
         {
-
+            
         }
 
         // This is an initializer that will allow a new task to be created as a copy of an existing task

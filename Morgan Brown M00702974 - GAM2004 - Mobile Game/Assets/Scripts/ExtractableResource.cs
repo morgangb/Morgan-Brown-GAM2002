@@ -35,4 +35,14 @@ public class ExtractableResource : MonoBehaviour
         myCommuneManager.ChangeResources(myClickable.resources, false);
         Destroy(gameObject);
     }
+
+    public void Breed()
+    {
+        // 50% chance of spawning a copy of self nearby
+        if(Random.Range(0f, 1f) >= 0.5f)
+        {
+            var clone = Instantiate(gameObject);
+            clone.transform.Translate(new Vector2(Random.Range(-2f, 2f), Random.Range(-2f, 2f)));
+        }
+    }
 }

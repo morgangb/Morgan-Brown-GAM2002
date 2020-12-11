@@ -65,10 +65,13 @@ public class CameraController : MonoBehaviour
                     }
                 }
 
-                // Move while mouse button is down
                 if (Input.GetMouseButton(0))
                 {
+                    // Move while mouse button is down
                     transform.Translate((mousePosOrigin - mousePos2D) * mouseMoveSpd);
+                
+                    // Send message that mouse is held to destroy buildings
+                    hit.transform.gameObject.SendMessage("ClickHeld");
                 }
 
                 // Zoom based on scroll wheel input

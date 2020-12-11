@@ -10,6 +10,10 @@ public class Building : MonoBehaviour
     // Difficulty; how long to build
     public float buildDifficulty = 1f;
 
+    // Clicktime; how long has the click been held, and what was it last frame
+    private float clickTime = 0f;
+    private float lastClickTime = 0f;
+
     // Difficulty; how long to use
     public float useDifficulty = 1f;
     // Skill to use
@@ -41,18 +45,41 @@ public class Building : MonoBehaviour
     {
         // Get ref to clickable
         myClickable = GetComponent<Clickable>();
-        // Set clickable's task to building this gameObject at the specified difficulty
-        myClickable.myTask = new Task(1, 2, buildDifficulty, gameObject);
 
         // Find communemanager
         myCommuneManager = GameObject.FindWithTag("CommuneManager").GetComponent<CommuneManager>();
 
         // Initialise beds with empty beds
         beds = new Bed[bedsCount];
+
+        // if this is already built set the task to use, and if not, set it to build
+        if (built)
+        {
+            // Set clickable's task to using this gameObject at the specified difficulty
+            myClickable.myTask = new Task(2, skill, useDifficulty, gameObject);
+        }
+        else
+        {
+            // Set clickable's task to building this gameObject at the specified difficulty
+            myClickable.myTask = new Task(1, 2, buildDifficulty, gameObject);
+        }
     }
 
     private void Update()
     {
+        if (clickTime == lastClickTime)
+        {
+            clickTime = 0f;
+        }
+
+        if (clickTime >= 1f)
+        {
+            myCommuneManager.RemoveTask(myClickable.myTask);
+            Destroy(gameObject);
+        }
+
+        lastClickTime = clickTime;
+
         // Decrease coolDown
         if (coolDown > 0f)
         {
@@ -86,5 +113,10 @@ public class Building : MonoBehaviour
 
         // Set coolDown
         coolDown = useDifficulty * 2f;
+    }
+
+    public void ClickHeld()
+    {
+        clickTime += Time.deltaTime;
     }
 }

@@ -183,7 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildDifficulty: 1
   useDifficulty: 1
-  skill: 3
+  skill: 5
   buildResources: 010000000000000000000000000000000100000000000000
   built: 0
   coolDown: 0

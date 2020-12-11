@@ -31,8 +31,11 @@ public class Clickable : MonoBehaviour
         // On clicked remove/add task for using
         if(!myCommuneManager.RemoveTask(new Task(myTask)) && myTask.difficulty > 0f)
         {
-            taskMarker.SetActive(true);
-            myCommuneManager.AddTask(new Task(myTask));
+            if ((GetComponent<Building>() && myCommuneManager.CheckResources(GetComponent<Building>().buildResources)) || !GetComponent<Building>())
+            {
+                taskMarker.SetActive(true);
+                myCommuneManager.AddTask(new Task(myTask));
+            }
         }
         else 
         {

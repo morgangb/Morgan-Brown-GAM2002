@@ -17,8 +17,8 @@ public class CommuneMember : MonoBehaviour
     private CommuneManager myCommuneManager;
 
     // Member skill stats
-    public int[] abilities = {1, 1, 1, 1};
-    public int[] enjoyment = {1, 1, 1, 1};
+    public int[] abilities = {1, 1, 1, 1, 1};
+    public int[] enjoyment = {1, 1, 1, 1, 1};
 
     // Stat displays
     [SerializeField] private GameObject statsDisplay;
@@ -44,6 +44,11 @@ public class CommuneMember : MonoBehaviour
 
     private void Update()
     {
+        if (targetTask == null || targetTask.target == null) {
+            targetTaskIndex = -1;
+            targetTask = null;
+        }
+
         // Find task if there is no current task, otherwise, do current task
         if (targetTaskIndex == -1)
         {
@@ -106,8 +111,8 @@ public class CommuneMember : MonoBehaviour
                                 // Loop through buildings
                                 foreach (GameObject building in buildings)
                                 {
-                                    // The building hasn't been built
-                                    if (!building.GetComponent<Building>().built)
+                                    // The building hasn't been built and there are enough resources
+                                    if (!building.GetComponent<Building>().built && myCommuneManager.CheckResources(building.GetComponent<Building>().buildResources))
                                     {
                                         // Try to make a task, if successful, break out of loop (since a task has been found, there's no need to continue)
                                         if (MakeTask(1, 2, building.GetComponent<Building>().buildDifficulty, building))
