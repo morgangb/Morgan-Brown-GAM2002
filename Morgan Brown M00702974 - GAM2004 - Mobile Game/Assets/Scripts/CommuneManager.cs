@@ -228,8 +228,10 @@ public class CommuneManager : MonoBehaviour
                 // Add to overallsatisfaction the satisfaction of this members
                 overallSatisfaction += communeMembers[i].GetComponent<CommuneMember>().satisfaction;
 
-                // Add today as unsated to the member
-                communeMembers[i].GetComponent<CommuneMember>().daysUnsated += 1;
+                if (!sated) {
+                    // Add today as unsated to the member
+                    communeMembers[i].GetComponent<CommuneMember>().daysUnsated += 1;
+                }
             }
 
             // Find average satisfaction by dividing by total number of members
