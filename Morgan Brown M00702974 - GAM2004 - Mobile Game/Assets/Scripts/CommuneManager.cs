@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class CommuneManager : MonoBehaviour
 {
     // Store arrays of names
-    public string[] names = {
+    private string[] names = {
         "Karl Marx",
         "Mao Zedong",
         "Leon Trotsky",

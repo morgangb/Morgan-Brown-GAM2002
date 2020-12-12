@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skill: 0
-  difficulty: 1
+  difficulty: 2
 --- !u!61 &1870482806732561555
 BoxCollider2D:
   m_ObjectHideFlags: 0

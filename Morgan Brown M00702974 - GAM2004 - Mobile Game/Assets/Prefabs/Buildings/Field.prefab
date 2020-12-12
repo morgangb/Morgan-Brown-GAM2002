@@ -181,10 +181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536afff74cd5e8e009cff7870ec7560e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildDifficulty: 1
-  useDifficulty: 1
+  buildDifficulty: 2
+  useDifficulty: 2
   skill: 3
-  buildResources: 01000000000000000100000001000000
+  buildResources: 03000000000000000300000000000000
   built: 0
   coolDown: 0
   buildMarker: {fileID: 3941320810800023044}

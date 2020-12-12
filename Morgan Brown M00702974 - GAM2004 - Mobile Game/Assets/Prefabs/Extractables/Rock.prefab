@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skill: 1
-  difficulty: 2
+  difficulty: 3
 --- !u!61 &3310571717690658368
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -220,5 +220,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5376b35c78e786fa6d58a6d4453a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resources: 00000000000000000000000001000000
+  resources: 00000000000000000000000002000000
   taskMarker: {fileID: 7224506717830413164}
