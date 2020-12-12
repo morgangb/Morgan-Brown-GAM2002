@@ -1,0 +1,4 @@
+#Sat Dec 12 17:32:40 GMT 2020
+base.0=/home/morgan/Documents/Unity Projects/Morgan-Brown-GAM2002/Morgan Brown M00702974 - GAM2004 - Mobile Game/Temp/gradleOut/launcher/build/intermediates/transforms/dexMerger/release/0
+path.0=classes.dex
+renamed.0=classes.dex
